@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/general_info"
+            android:title="General Info"
+            android:icon="@drawable/ic_list_black_24dp"
+            ></item>
+        <item
+            android:id="@+id/sensors"
+            android:title="Sensors"
+            android:icon="@drawable/ic_settings_remote_black_24dp"
+            ></item>
+        <item
+            android:id="@+id/graph"
+            android:title="Graph"
+            android:icon="@drawable/ic_timeline_black_24dp"
+            ></item>
+    </group>
+
+    <item android:title="Simulation">
+        <menu>
+            <item
+                android:title="Run Once"
+                android:id="@+id/run_once"
+                android:icon="@drawable/ic_play_arrow_black_24dp"
+                ></item>
+            <item
+                android:id="@+id/run_multiple"
+                android:title="Run Multiple..."
+                android:icon="@drawable/ic_fast_forward_black_24dp"
+                ></item>
+            <item
+                android:id="@+id/simulation_setup"
+                android:title="Simulation Setup"
+                android:icon="@drawable/ic_build_black_24dp"
+                ></item>
+        </menu>
+    </item>
+</menu>
