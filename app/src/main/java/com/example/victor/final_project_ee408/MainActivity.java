@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.general_info) {
-            // Handle the camera action
+            // Handle the general_info button
         } else if (id == R.id.sensors) {
 
         } else if (id == R.id.graph) {
