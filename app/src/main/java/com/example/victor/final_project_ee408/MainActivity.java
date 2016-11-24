@@ -3,6 +3,9 @@ package com.example.victor.final_project_ee408;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import fragments.general_info;
+import fragments.sensors;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,23 +85,37 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment fragment = null;
+        Class fragmentClass = null;
         if (id == R.id.general_info) {
             // Handle the general_info button
+            fragmentClass  = general_info.class;
         } else if (id == R.id.sensors) {
-
+            fragmentClass  = sensors.class;
         } else if (id == R.id.graph) {
-
+            fragmentClass  = general_info.class;
         } else if (id == R.id.run_once) {
-
+            fragmentClass  = general_info.class;
         } else if (id == R.id.run_multiple) {
-
+            fragmentClass  = general_info.class;
         } else if (id == R.id.simulation_setup) {
-
+            fragmentClass  = general_info.class;
         }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        general_info test = new general_info();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, test).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+
         return true;
     }
 }
