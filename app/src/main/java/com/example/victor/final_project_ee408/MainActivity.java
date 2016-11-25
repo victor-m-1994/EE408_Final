@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass = null;
+        System.out.println("ayyy");
         if (id == R.id.general_info) {
             // Handle the general_info button
             fragmentClass  = general_info.class;
@@ -95,20 +96,21 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.simulation_setup) {
             fragmentClass  = general_info.class;
         }
-
+        System.out.println("before try");
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println("after try");
         FragmentManager fragmentManager = getSupportFragmentManager();
+        System.out.println("after new fragment manager");
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
+        System.out.println("Trying transaction");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-
+        System.out.println("close?");
         return true;
     }
 }
