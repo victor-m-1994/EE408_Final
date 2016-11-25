@@ -18,7 +18,10 @@ import android.view.MenuItem;
 
 import fragments.general_info;
 import fragments.graph;
+import fragments.run_multiple;
+import fragments.run_once;
 import fragments.sensors;
+import fragments.simulation_setup;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -90,11 +93,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.graph) {
             fragmentClass  = graph.class;
         } else if (id == R.id.run_once) {
-            fragmentClass  = general_info.class;
+            fragmentClass  = run_once.class;
         } else if (id == R.id.run_multiple) {
-            fragmentClass  = general_info.class;
+            fragmentClass  = run_multiple.class;
         } else if (id == R.id.simulation_setup) {
-            fragmentClass  = general_info.class;
+            fragmentClass  = simulation_setup.class;
         }
         System.out.println("before try");
         try {
