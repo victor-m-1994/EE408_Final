@@ -1,3 +1,4 @@
+<!--TODO: Change action bar title to "Simulation Setup" -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +9,176 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Simulation Setup Fragment" />
+        android:text="" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:text="Observation Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/observation"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="19dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="18dp"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Temperature"
+                android:ems="10"
+                android:layout_below="@+id/observation"
+                android:layout_alignLeft="@+id/observation"
+                android:layout_alignStart="@+id/observation"
+                android:id="@+id/obv_name"
+                android:textSize="15dp" />
+
+            <TextView
+                android:text="Number of Sensors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/obv_name"
+                android:layout_alignLeft="@+id/obv_name"
+                android:id="@+id/Number"
+                android:textSize="18dp"/>
+            <!-- TODO: change this to a number scroll wheel [1-100] -->
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="20"
+                android:layout_below="@id/Number"
+                android:layout_alignLeft="@id/obv_name"
+                android:textSize="15dp"
+                android:id="@+id/sensor_number"/>
+
+            <!-- Theta 65.0
+                Power 1.0
+                N Variance 1.0
+                V Variance 1.0
+                K Value 1.0-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sensor_number"
+                android:layout_alignLeft="@id/Number"
+                android:text="Theta"
+                android:id="@+id/theta"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="65.0"
+                android:layout_below="@id/theta"
+                android:layout_alignLeft="@id/Number"
+                android:textSize="15dp"
+                android:id="@+id/theta_val"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/theta_val"
+                android:layout_alignLeft="@id/Number"
+                android:text="Power"
+                android:id="@+id/power"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0"
+                android:layout_below="@id/power"
+                android:layout_alignLeft="@id/Number"
+                android:textSize="15dp"
+                android:id="@+id/power_val"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/power_val"
+                android:layout_alignLeft="@id/Number"
+                android:text="N Variance"
+                android:id="@+id/n"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0"
+                android:layout_below="@id/n"
+                android:layout_alignLeft="@id/Number"
+                android:textSize="15dp"
+                android:id="@+id/n_variance"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/n_variance"
+                android:layout_alignLeft="@id/Number"
+                android:text="V Variance"
+                android:id="@+id/v"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0"
+                android:layout_below="@id/v"
+                android:layout_alignLeft="@id/Number"
+                android:textSize="15dp"
+                android:id="@+id/v_variance"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_variance"
+                android:layout_alignLeft="@id/Number"
+                android:text="K Value"
+                android:id="@+id/k"
+                android:textSize="18dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0"
+                android:layout_below="@id/k"
+                android:layout_alignLeft="@id/Number"
+                android:textSize="15dp"
+                android:id="@+id/k_value"/>
+
+            <!-- TODO: implement only one switch at a time -->
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use Rician Channels             "
+                android:layout_below="@id/k_value"
+                android:layout_alignLeft="@id/sensor_number"
+                android:textSize="15dp"
+                android:id="@+id/rician_chan"
+                />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use Uniform Aplhas              "
+                android:layout_below="@id/rician_chan"
+                android:layout_alignLeft="@id/sensor_number"
+                android:textSize="15dp"
+                android:id="@+id/uniform_alpha"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </FrameLayout>

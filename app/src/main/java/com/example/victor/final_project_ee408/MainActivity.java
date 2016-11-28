@@ -23,8 +23,18 @@ import fragments.run_once;
 import fragments.sensors;
 import fragments.simulation_setup;
 
+import static android.R.attr.fragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    //Defining fragments
+    private general_info general_info_fragment = new general_info();
+    private graph graph_fragment = new graph();
+    private run_multiple run_multiple_fragment = new run_multiple();
+    private run_once run_once_fragment = new run_once();
+    private sensors sensors_fragment = new sensors();
+    private simulation_setup simulation_setup_fragment = new simulation_setup();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,34 +98,24 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass = null;
         System.out.println("ayyy");
         if (id == R.id.general_info) {
-            // Handle the general_info button
-            fragmentClass  = general_info.class;
+            fragment = general_info_fragment;
         } else if (id == R.id.sensors) {
-            fragmentClass  = sensors.class;
+            fragment = sensors_fragment;
         } else if (id == R.id.graph) {
-            fragmentClass  = graph.class;
+            fragment = graph_fragment;
         } else if (id == R.id.run_once) {
-            fragmentClass  = run_once.class;
+            fragment = run_once_fragment;
         } else if (id == R.id.run_multiple) {
-            fragmentClass  = run_multiple.class;
+            fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {
-            fragmentClass  = simulation_setup.class;
+            fragment = simulation_setup_fragment;
         }
-        System.out.println("before try");
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("after try");
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        System.out.println("after new fragment manager");
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        System.out.println("Trying transaction");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        System.out.println("close?");
         return true;
     }
 }
