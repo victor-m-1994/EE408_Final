@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.victor.final_project_ee408.R;
+
+import static com.example.victor.final_project_ee408.R.layout.fragment_sensors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +73,23 @@ public class simulation_setup extends Fragment {
         return inflater.inflate(R.layout.fragment_simulation_setup, container, false);
     }
 
+    private EditText num_sensors,theta,power,nVariance,vVariance,kValue;
+    private CompoundButton rician,uniformAlpha;
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // save views as variables in this method
+        // "view" is the one returned from onCreateView
+        num_sensors = (EditText) view.findViewById(R.id.sensor_number);
+        theta = (EditText) view.findViewById(R.id.theta_val);
+        power = (EditText) view.findViewById(R.id.power_val);
+        nVariance = (EditText) view.findViewById(R.id.n_variance);
+        vVariance = (EditText) view.findViewById(R.id.v_variance);
+        kValue = (EditText) view.findViewById(R.id.k_value);
+        rician = (CompoundButton)view.findViewById(R.id.rician_chan);
+        uniformAlpha = (CompoundButton)view.findViewById(R.id.uniform_alpha);
+    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -105,5 +127,52 @@ public class simulation_setup extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    //value returning functions
+    public int getNumberOfSensors(){
+        int numSensors = Integer.parseInt(num_sensors.getText().toString());
+        return numSensors;
+    }
+
+    public double getThetaValue(){
+        int thetaVal = Integer.parseInt(theta.getText().toString());
+        return thetaVal;
+    }
+
+    public double getPowerValue(){
+        int powerVal = Integer.parseInt(power.getText().toString());
+        return powerVal;
+    }
+
+    public double getNVariance(){
+        int nVar = Integer.parseInt(nVariance.getText().toString());
+        return nVar;
+    }
+
+    public double getVVariance(){
+        int vVar = Integer.parseInt(vVariance.getText().toString());
+        return vVar;
+    }
+
+    public double getKValue(){
+        int k = Integer.parseInt(kValue.getText().toString());
+        return k;
+    }
+
+    public boolean ricianChannels(){
+        if(rician.isChecked())
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean uniformAlphas(){
+        if(uniformAlpha.isChecked())
+        {
+            return true;
+        }
+        else return false;
     }
 }

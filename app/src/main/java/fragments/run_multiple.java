@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.example.victor.final_project_ee408.R;
 
@@ -55,16 +57,20 @@ public class run_multiple extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        System.out.println("onCreate for run_multiple");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        System.out.println("onCreateView for run_multiple");
         return inflater.inflate(R.layout.fragment_run_multiple, container, false);
     }
 
@@ -73,6 +79,7 @@ public class run_multiple extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+        System.out.println("onButtonPressed for run_multiple");
     }
 
     @Override
@@ -84,6 +91,7 @@ public class run_multiple extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }*/
+        System.out.println("onAttach for run_multiple");
     }
 
     @Override
