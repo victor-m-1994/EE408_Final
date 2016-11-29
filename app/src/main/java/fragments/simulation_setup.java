@@ -77,8 +77,6 @@ public class simulation_setup extends Fragment {
     private CompoundButton rician,uniformAlpha;
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // save views as variables in this method
-        // "view" is the one returned from onCreateView
         num_sensors = (EditText) view.findViewById(R.id.sensor_number);
         theta = (EditText) view.findViewById(R.id.theta_val);
         power = (EditText) view.findViewById(R.id.power_val);

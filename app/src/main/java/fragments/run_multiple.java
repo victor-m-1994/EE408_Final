@@ -73,7 +73,12 @@ public class run_multiple extends Fragment {
         System.out.println("onCreateView for run_multiple");
         return inflater.inflate(R.layout.fragment_run_multiple, container, false);
     }
-
+    private NumberPicker np;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        np = (NumberPicker)view.findViewById(R.id.np);
+        np.setMinValue(0);
+        np.setMaxValue(100);
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
