@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity
     private simulation_setup simulation_setup_fragment = new simulation_setup();
 
     private NumberPicker np;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +55,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Number Picker
-        /*np = (NumberPicker)findViewById(R.id.np);
-        np.setMinValue(0);
-        np.setMaxValue(100);
-        np.setWrapSelectorWheel(true);*/
+        //Loads each fragment, in turn, initializing the data
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, run_once_fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, sensors_fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
+        general_info_fragment.passSimValues(simulation_setup_fragment);
+        fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
 
     }
 
@@ -123,7 +126,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        
         return true;
     }
 }

@@ -136,27 +136,27 @@ public class simulation_setup extends Fragment {
     }
 
     public double getThetaValue(){
-        int thetaVal = Integer.parseInt(theta.getText().toString());
+        double thetaVal = Double.parseDouble(theta.getText().toString());
         return thetaVal;
     }
 
     public double getPowerValue(){
-        int powerVal = Integer.parseInt(power.getText().toString());
+        double powerVal = Double.parseDouble(power.getText().toString());
         return powerVal;
     }
 
     public double getNVariance(){
-        int nVar = Integer.parseInt(nVariance.getText().toString());
+        double nVar = Double.parseDouble(nVariance.getText().toString());
         return nVar;
     }
 
     public double getVVariance(){
-        int vVar = Integer.parseInt(vVariance.getText().toString());
+        double vVar = Double.parseDouble(vVariance.getText().toString());
         return vVar;
     }
 
     public double getKValue(){
-        int k = Integer.parseInt(kValue.getText().toString());
+        double k = Double.parseDouble(kValue.getText().toString());
         return k;
     }
 

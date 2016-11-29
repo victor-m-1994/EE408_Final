@@ -7,8 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import java.util.ArrayList;
+import android.os.Bundle;
 
 import com.example.victor.final_project_ee408.R;
+
+import static android.R.attr.fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +74,44 @@ public class general_info extends Fragment {
         return inflater.inflate(R.layout.fragment_general_info, container, false);
     }
 
+    private ListView list;
+    private simulation_setup sim_setup;
+
+    public void passSimValues(simulation_setup simVals)
+    {
+        sim_setup = simVals;
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        list = (ListView)view.findViewById(R.id.list);//Creates list
+        String[] values = new String[] { "Observation Main",
+                "Number of Sensors: ",
+                "Theta: ",
+                "Power: ",
+                "N Variance: ",
+                "V Variance: ",
+                "K Value: ",
+                "Using Rician Channels: ",
+                "Using Uniform Alphas: "
+        };
+
+        values[1] += sim_setup.getNumberOfSensors();
+        values[2] += sim_setup.getThetaValue();
+        values[3] += sim_setup.getPowerValue();
+        values[4] += sim_setup.getNVariance();
+        values[5] += sim_setup.getVVariance();
+        values[6] += sim_setup.getKValue();
+        values[7] += sim_setup.ricianChannels();
+        values[8] += sim_setup.uniformAlphas();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+
+        // Assign adapter to ListView
+        list.setAdapter(adapter);
+
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
