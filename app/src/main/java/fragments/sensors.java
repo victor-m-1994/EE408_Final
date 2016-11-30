@@ -133,21 +133,22 @@ public class sensors extends Fragment {
     private void setDisplay(){
         int h = SimulationManager.getSimulationSetup().getSensorCount();
         String[] holder = new String[h];
-        String holder2 = "";
+        String holder2 = "          ";
         int i =0;
         String h1 = "";
         for (Sensor s : SimulationManager.getLastSimulation().getSensorList()) {
-            holder2 += s.getID() + "\t\t";
+            holder2 = "          ";
+            holder2 += s.getID() + "            ";//was "\t\t"
             h1 = "";
             for ( int f = 0; f < 4; f++ ){
                 h1 += Double.toString(s.getAlpha().getMagnitude()).charAt(f);
             }
-            holder2 += h1 + "\t\t";
+            holder2 += h1 + "           "; //was "\t\t"
             h1 = "";
             for ( int f = 0; f < 4; f++ ){
                 h1 += Double.toString(s.getHVal().getMagnitude()).charAt(f);
             }
-            holder2 += h1 + "\t\t";
+            holder2 += h1 + "           ";//was "\t\t"
             h1 = "";
             for ( int f = 0; f < 4; f++ ){
                 h1 += Double.toString(s.getNVal().getReal()).charAt(f);
