@@ -69,6 +69,12 @@ public class run_multiple extends Fragment {
         System.out.println("onCreate for run_multiple");
     }
 
+    private simulation_setup sim_setup;
+
+    public void passSimValues(simulation_setup simVals)
+    {
+        sim_setup = simVals;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,6 +96,16 @@ public class run_multiple extends Fragment {
             public void onClick(View v){
                 int val = np.getValue();
                 //run_sim = new Simulation(setup);
+                SimulationManager.getSimulationSetup().setObservation(sim_setup.getObservationName());
+                SimulationManager.getSimulationSetup().setSensorCount(sim_setup.getNumberOfSensors());
+                SimulationManager.getSimulationSetup().setTheta(sim_setup.getThetaValue());
+                SimulationManager.getSimulationSetup().setPower(sim_setup.getPowerValue());
+                SimulationManager.getSimulationSetup().setVarianceN(sim_setup.getNVariance());
+                SimulationManager.getSimulationSetup().setVarianceV(sim_setup.getVVariance());
+                SimulationManager.getSimulationSetup().setK(sim_setup.getKValue());
+                SimulationManager.getSimulationSetup().setRician(sim_setup.ricianChannels());
+                SimulationManager.getSimulationSetup().setUniform(sim_setup.uniformAlphas());
+
                 for(int i = 0; i<val; i++){
                     //run_sim.runSimulation();
                     SimulationManager.runSimulation();

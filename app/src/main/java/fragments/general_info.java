@@ -14,6 +14,8 @@ import android.os.Bundle;
 
 import com.example.victor.final_project_ee408.R;
 
+import API.SimulationManager;
+
 import static android.R.attr.fragment;
 
 /**
@@ -84,9 +86,10 @@ public class general_info extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         list = (ListView)view.findViewById(R.id.list);//Creates list
-        String[] values = new String[] { "",
-                "Number of Sensors: ",
+        String[] values = new String[] { "Current Setup: ",
+                "Theta Hat: ",
                 "Theta: ",
+                "Number of Sensors: ",
                 "Power: ",
                 "N Variance: ",
                 "V Variance: ",
@@ -96,16 +99,17 @@ public class general_info extends Fragment {
         };
 
         values[0] += sim_setup.getObservationName();
-        values[1] += sim_setup.getNumberOfSensors();
-        values[2] += sim_setup.getThetaValue();
-        values[3] += sim_setup.getPowerValue();
-        values[4] += sim_setup.getNVariance();
-        values[5] += sim_setup.getVVariance();
-        values[6] += sim_setup.getKValue();
-        values[7] += sim_setup.ricianChannels();
-        values[8] += sim_setup.uniformAlphas();
+        values[1] += SimulationManager.getLastSimulation().getThetaHat().toFormattedString();
+        values[2] += SimulationManager.getSimulationSetup().getTheta();
+        values[3] += SimulationManager.getSimulationSetup().getSensorCount();
+        values[4] += sim_setup.getPowerValue();
+        values[5] += sim_setup.getNVariance();
+        values[6] += sim_setup.getVVariance();
+        values[7] += sim_setup.getKValue();
+        values[8] += sim_setup.ricianChannels();
+        values[9] += sim_setup.uniformAlphas();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
 
