@@ -1,13 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.sensors">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:text="sensor number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="sortSensors"
+        android:id="@+id/sort_by_sensor_number" />
+    <Button
+        android:text="alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/sort_by_sensor_number"
+        android:onClick="sortSensors"
+        android:id="@+id/sort_by_alpha" />
+    <Button
+        android:text="H val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/sort_by_alpha"
+        android:onClick="sortSensors"
+        android:id="@+id/sort_by_H_value" />
+    <Button
+        android:text="N val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/sort_by_H_value"
+        android:onClick="sortSensors"
+        android:id="@+id/sort_by_N_value" />
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Sensors Fragment" />
-
-</FrameLayout>
+        android:layout_below="@+id/sort_by_alpha"
+        android:id="@+id/sensor_list"
+        android:divider="@android:color/black"></ListView>
+</RelativeLayout>
