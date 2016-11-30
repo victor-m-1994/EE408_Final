@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.victor.final_project_ee408.R;
-
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -60,7 +62,20 @@ public class graph extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        LineGraphSeries<DataPoint> series;
+        double y,x;
+        x = 0.0;
 
+        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        series = new LineGraphSeries<DataPoint>();
+        for(int i = 0; i<100; i++){
+            x = x + 0.1;
+            y = Math.sin(x);
+            series.appendData(new DataPoint(x, y), true, 100);
+        }
+        graph.addSeries(series);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

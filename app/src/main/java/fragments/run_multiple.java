@@ -7,11 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.victor.final_project_ee408.R;
 
+//import API.Simulation;
+import API.*;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -21,6 +24,7 @@ import com.example.victor.final_project_ee408.R;
  * create an instance of this fragment.
  */
 public class run_multiple extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -74,11 +78,27 @@ public class run_multiple extends Fragment {
         return inflater.inflate(R.layout.fragment_run_multiple, container, false);
     }
     private NumberPicker np;
+    private Simulation run_sim;
+    private SimulationSetup setup;
     public void onViewCreated(View view, Bundle savedInstanceState) {
         np = (NumberPicker)view.findViewById(R.id.np);
         np.setMinValue(0);
         np.setMaxValue(100);
+
+        final Button runBtn = (Button) view.findViewById(R.id.runBtn);
+        runBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                int val = np.getValue();
+                //run_sim = new Simulation(setup);
+                for(int i = 0; i<val; i++){
+                    //run_sim.runSimulation();
+                    SimulationManager.runSimulation();
+                }
+            }
+        });
+
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -119,4 +139,6 @@ public class run_multiple extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

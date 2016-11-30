@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.NumberPicker;
 
+import API.SimulationManager;
 import fragments.general_info;
 import fragments.graph;
 import fragments.run_multiple;
@@ -115,17 +116,19 @@ public class MainActivity extends AppCompatActivity
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
             fragment = run_once_fragment;
+            SimulationManager.runSimulation();
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {
             fragment = simulation_setup_fragment;
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
+        if(fragment !=run_once_fragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 }
