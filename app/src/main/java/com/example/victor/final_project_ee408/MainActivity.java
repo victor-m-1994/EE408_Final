@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, sensors_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
         general_info_fragment.passSimValues(simulation_setup_fragment);
+        run_multiple_fragment.passSimValues(simulation_setup_fragment);
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
 
     }
@@ -116,6 +117,16 @@ public class MainActivity extends AppCompatActivity
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
             fragment = run_once_fragment;
+            SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
+            SimulationManager.getSimulationSetup().setSensorCount(simulation_setup_fragment.getNumberOfSensors());
+            SimulationManager.getSimulationSetup().setTheta(simulation_setup_fragment.getThetaValue());
+            SimulationManager.getSimulationSetup().setPower(simulation_setup_fragment.getPowerValue());
+            SimulationManager.getSimulationSetup().setVarianceN(simulation_setup_fragment.getNVariance());
+            SimulationManager.getSimulationSetup().setVarianceV(simulation_setup_fragment.getVVariance());
+            SimulationManager.getSimulationSetup().setK(simulation_setup_fragment.getKValue());
+            SimulationManager.getSimulationSetup().setRician(simulation_setup_fragment.ricianChannels());
+            SimulationManager.getSimulationSetup().setUniform(simulation_setup_fragment.uniformAlphas());
+
             SimulationManager.runSimulation();
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
