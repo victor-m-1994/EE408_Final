@@ -73,10 +73,12 @@ public class simulation_setup extends Fragment {
         return inflater.inflate(R.layout.fragment_simulation_setup, container, false);
     }
 
-    private EditText num_sensors,theta,power,nVariance,vVariance,kValue;
+    private EditText obv_name,num_sensors,theta,power,nVariance,vVariance,kValue;
     private CompoundButton rician,uniformAlpha;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        obv_name = (EditText) view.findViewById(R.id.obv_name);
         num_sensors = (EditText) view.findViewById(R.id.sensor_number);
         theta = (EditText) view.findViewById(R.id.theta_val);
         power = (EditText) view.findViewById(R.id.power_val);
@@ -128,6 +130,11 @@ public class simulation_setup extends Fragment {
     }
 
     //value returning functions
+    public String getObservationName(){
+        String observationName = obv_name.getText().toString();
+        return observationName;
+    }
+
     public int getNumberOfSensors(){
         int numSensors = Integer.parseInt(num_sensors.getText().toString());
         return numSensors;

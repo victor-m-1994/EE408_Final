@@ -84,7 +84,7 @@ public class general_info extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         list = (ListView)view.findViewById(R.id.list);//Creates list
-        String[] values = new String[] { "Observation Main",
+        String[] values = new String[] { "",
                 "Number of Sensors: ",
                 "Theta: ",
                 "Power: ",
@@ -95,6 +95,7 @@ public class general_info extends Fragment {
                 "Using Uniform Alphas: "
         };
 
+        values[0] += sim_setup.getObservationName();
         values[1] += sim_setup.getNumberOfSensors();
         values[2] += sim_setup.getThetaValue();
         values[3] += sim_setup.getPowerValue();
