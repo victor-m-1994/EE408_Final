@@ -3,12 +3,24 @@ package fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.victor.final_project_ee408.R;
+
+import java.util.ArrayList;
+
+import API.Complex;
+import API.Sensor;
+import API.SimulationManager;
+
+import static API.SimulationManager.getSimulationSetup;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +35,8 @@ public class sensors extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Button sensor_sort, alpha_sort, h_val_sort, n_val_sort;
+    private ListView lv;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -68,6 +82,93 @@ public class sensors extends Fragment {
         return inflater.inflate(R.layout.fragment_sensors, container, false);
     }
 
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        sensor_sort = (Button) getActivity().findViewById(R.id.sort_by_sensor_number);
+        alpha_sort = (Button) getActivity().findViewById(R.id.sort_by_alpha);
+        n_val_sort = (Button) getActivity().findViewById(R.id.sort_by_N_value);
+        h_val_sort = (Button) getActivity().findViewById(R.id.sort_by_H_value);
+        sensor_sort.setOnClickListener(sortSensors);
+        alpha_sort.setOnClickListener(sortSensors);
+        h_val_sort.setOnClickListener(sortSensors);
+        n_val_sort.setOnClickListener(sortSensors);
+        lv = (ListView)getActivity().findViewById(R.id.sensor_list);
+        // DEBUG: uncomment here
+//        getSimulationSetup().setObservation("Temperature");
+//        getSimulationSetup().setSensorCount(20);
+//        getSimulationSetup().setTheta(65);
+//        getSimulationSetup().setPower(1d);
+//        getSimulationSetup().setVarianceN(5d);
+//        getSimulationSetup().setVarianceV(1d);
+//        getSimulationSetup().setK(1.5d);
+//        getSimulationSetup().setRician(true);
+//        getSimulationSetup().setUniform(false);
+//        SimulationManager.runSimulation();
+//        setDisplay();
+    }
+    View.OnClickListener sortSensors = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button b = (Button) v;
+            if (b.getId() == sensor_sort.getId()) {
+//                SimulationManager.sortSensorsByAlpha(false);
+//                SimulationManager.sortSensorsByH(false);
+//                SimulationManager.sortSensorsByN(false);
+                SimulationManager.sortSensorsByNumber(true);
+                setDisplay();
+            }
+            else if (b.getId() == alpha_sort.getId()) {
+                SimulationManager.sortSensorsByAlpha(true);
+                setDisplay();
+            }
+            else if (b.getId() == h_val_sort.getId()) {
+                SimulationManager.sortSensorsByH(true);
+                setDisplay();
+            }
+            else if (b.getId() == n_val_sort.getId()) {
+                SimulationManager.sortSensorsByN(true);
+                setDisplay();
+            }
+        }
+    };
+    private void setDisplay(){
+        int h = SimulationManager.getSimulationSetup().getSensorCount();
+        String[] holder = new String[h];
+        String holder2 = "";
+        int i =0;
+        String h1 = "";
+        for (Sensor s : SimulationManager.getLastSimulation().getSensorList()) {
+            holder2 += s.getID() + "\t\t";
+            h1 = "";
+            for ( int f = 0; f < 4; f++ ){
+                h1 += Double.toString(s.getAlpha().getMagnitude()).charAt(f);
+            }
+            holder2 += h1 + "\t\t";
+            h1 = "";
+            for ( int f = 0; f < 4; f++ ){
+                h1 += Double.toString(s.getHVal().getMagnitude()).charAt(f);
+            }
+            holder2 += h1 + "\t\t";
+            h1 = "";
+            for ( int f = 0; f < 4; f++ ){
+                h1 += Double.toString(s.getNVal().getReal()).charAt(f);
+            }
+            holder2 += h1 + " + ";
+            h1 = "";
+            for ( int f = 0; f < 4; f++ ){
+                h1 += Double.toString(s.getNVal().getImaginary()).charAt(f);
+            }
+            holder2 += h1 + "j";
+            holder[i] = holder2;
+            i++;
+            System.out.println(holder[i-1]);
+            holder2 = "";
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, holder);
+        // Assign adapter to ListView
+        lv.setAdapter(adapter);
+        System.out.println("hello world5");
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
