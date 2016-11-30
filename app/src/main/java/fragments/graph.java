@@ -67,7 +67,7 @@ public class graph extends Fragment {
         LineGraphSeries<DataPoint> series;
         double y,x;
         x = 0.0;
-
+// blha
         GraphView graph = (GraphView) view.findViewById(R.id.graph);
         series = new LineGraphSeries<DataPoint>();
         for(int i = 0; i<100; i++){
