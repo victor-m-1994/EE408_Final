@@ -41,7 +41,7 @@ public class Simulation {
 	}
 
 
-	private void runSimulation() {
+	public void runSimulation() {//was private
        generateVValue();
        buildSensorList();
        generateYValue();
