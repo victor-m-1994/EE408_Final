@@ -78,7 +78,7 @@ public class graph extends Fragment {
         LineChart chart = (LineChart) view.findViewById(R.id.chart);
         double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        int maximumSamples = 100;
+        int maximumSamples = 10000;
         Random ran = new Random();
         double [] gaussianSamples = new double[maximumSamples];
         for (int i=0;i<maximumSamples;i++) {
@@ -99,7 +99,7 @@ public class graph extends Fragment {
 
         List<Entry> entries = new ArrayList<Entry>();
         for (int i=0;i<maximumSamples;i++) {//bad
-            entries.add(new Entry((float) (0+samples[i]),(int) distrVals[i])); //was (float) distrVals
+            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
         }
 
         Collections.sort(entries, new EntryXComparator());
