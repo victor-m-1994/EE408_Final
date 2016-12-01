@@ -114,6 +114,9 @@ public class run_multiple extends Fragment {
         });
 
     }
+    public int getNumberPicker(){
+        return np.getValue();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

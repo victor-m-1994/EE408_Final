@@ -78,7 +78,7 @@ public class graph extends Fragment {
         LineChart chart = (LineChart) view.findViewById(R.id.chart);
         double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        int maximumSamples = 10000;
+        int maximumSamples = 350;
         Random ran = new Random();
         double [] gaussianSamples = new double[maximumSamples];
         for (int i=0;i<maximumSamples;i++) {
@@ -107,6 +107,43 @@ public class graph extends Fragment {
         LineData lineData = new LineData(distributionData);
         chart.setData(lineData);
         chart.invalidate(); // refresh
+    }
+
+    public void addEstimated(){
+        double mean = SimulationManager.getSimulationSetup().getTheta();
+        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
+        //int samples = getNumberPicketValue
+        int samples = 6; // to be removed
+        Random run = new Random();
+        double [] gaussianSamples = new double[samples];
+        for (int i=0;i<samples;i++) {
+            gaussianSamples[i] = ((ran.nextGaussian()));
+        }
+
+        double [] distrVals = new double[samples];
+        /*for (int i=0;   i<samples;    i++) {
+            if (i<samples/2)
+                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
+            else
+                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
+
+            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
+            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
+        }*/
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<samples;i++) {//bad
+            entries.add(new Entry((float) (0+distrVals[i]),(float) distrVals[i]));
+        }
+
+        Collections.sort(entries, new EntryXComparator());
+        LineDataSet distributionData = new LineDataSet(entries, "Estimated Values"); // add entries to dataset
+        LineData lineData = new LineData(distributionData);
+        lineData.setColor("#ff0000");
+        lineData.setValueTextColor("#ff0000");
+        chart.setData(lineData);
+        chart.invalidate(); // refresh
+
     }
 
     @Override
