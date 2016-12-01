@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity
 
         //Loads each fragment, in turn, initializing the data
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_once_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, sensors_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
         general_info_fragment.passSimValues(simulation_setup_fragment);
         run_multiple_fragment.passSimValues(simulation_setup_fragment);
+        fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
 
     }

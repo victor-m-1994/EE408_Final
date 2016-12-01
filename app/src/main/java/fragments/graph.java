@@ -9,9 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.victor.final_project_ee408.R;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.EntryXComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import API.SimulationManager;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -62,20 +72,43 @@ public class graph extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        LineGraphSeries<DataPoint> series;
-        double y,x;
-        x = 0.0;
 
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
-        series = new LineGraphSeries<DataPoint>();
-        for(int i = 0; i<100; i++){
-            x = x + 0.1;
-            y = Math.sin(x);
-            series.appendData(new DataPoint(x, y), true, 100);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        LineChart chart = (LineChart) view.findViewById(R.id.chart);
+        double mean = SimulationManager.getSimulationSetup().getTheta();
+        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
+        int maximumSamples = 100;
+        Random ran = new Random();
+        double [] gaussianSamples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            gaussianSamples[i] = ((ran.nextGaussian()));
         }
-        graph.addSeries(series);
+
+        double [] distrVals = new double[maximumSamples];
+        double [] samples = new double[maximumSamples];
+        for (int i=0;   i<maximumSamples;    i++) {
+            if (i<maximumSamples/2)
+                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
+            else
+                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
+
+            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
+            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
+        }
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<maximumSamples;i++) {//bad
+            entries.add(new Entry((float) (0+samples[i]),(int) distrVals[i])); //was (float) distrVals
+        }
+
+        Collections.sort(entries, new EntryXComparator());
+        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
+        LineData lineData = new LineData(distributionData);
+        chart.setData(lineData);
+        chart.invalidate(); // refresh
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
