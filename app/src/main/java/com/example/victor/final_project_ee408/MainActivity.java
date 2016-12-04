@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
         general_info_fragment.passSimValues(simulation_setup_fragment);
         run_multiple_fragment.passSimValues(simulation_setup_fragment);
+        graph_fragment.passRunMultiple(run_multiple_fragment);
         fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
 

@@ -13,6 +13,8 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import java.util.List;
 import java.util.Random;
 
 import API.SimulationManager;
+
+import static android.R.attr.fragment;
+import static com.example.victor.final_project_ee408.R.id.graph;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,12 +78,27 @@ public class graph extends Fragment {
         }
     }
 
+    private run_multiple shared_run_multiple;
+
+    public void passRunMultiple(run_multiple passed_run_multiple)
+    {
+        shared_run_multiple = passed_run_multiple;
+    }
+
+    private LineChart chart;
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        LineChart chart = (LineChart) view.findViewById(R.id.chart);
+        if(shared_run_multiple.thetaHatValues == null)
+        {
+            return;
+        }
+        double [] thetaHatValues = shared_run_multiple.thetaHatValues;
+        LineChart chart = (LineChart)view.findViewById(graph);
+
         double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        int maximumSamples = 350;
+        //int maximumSamples = 1000;
+        int maximumSamples = 1000;
         Random ran = new Random();
         double [] gaussianSamples = new double[maximumSamples];
         for (int i=0;i<maximumSamples;i++) {
@@ -87,6 +107,7 @@ public class graph extends Fragment {
 
         double [] distrVals = new double[maximumSamples];
         double [] samples = new double[maximumSamples];
+        double [] distributedThetaHat = new double[thetaHatValues.length];
         for (int i=0;   i<maximumSamples;    i++) {
             if (i<maximumSamples/2)
                 samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
@@ -97,52 +118,69 @@ public class graph extends Fragment {
             distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
         }
 
+        for (int i=0;   i<thetaHatValues.length;    i++) { //gets Distributed Theta Hat values
+            distributedThetaHat[i] = (Math.pow(Math.exp(-(((thetaHatValues[i] - mean) * (thetaHatValues[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
+        }
         List<Entry> entries = new ArrayList<Entry>();
-        for (int i=0;i<maximumSamples;i++) {//bad
+        for (int i=0;i<maximumSamples;i++) {
             entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
         }
 
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>(); //for multiple plotting?
+        List<Entry> thetaHat = new ArrayList<Entry>();
+        for (int i=0;i<thetaHatValues.length;i++) {
+            thetaHat.add(new Entry((float) (0+thetaHatValues[i]),(float) distributedThetaHat[i]));
+        }
+        Collections.sort(thetaHat, new EntryXComparator());
+        LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
+        thetaHatData.setLineWidth(0);
+        thetaHatData.setFormLineWidth(0);
+        thetaHatData.setCircleColors(ColorTemplate.rgb("000000"));
+        dataSets.add(thetaHatData);
+
         Collections.sort(entries, new EntryXComparator());
         LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
-        LineData lineData = new LineData(distributionData);
+        distributionData.setDrawCircles(false); //This makes sure the circles are not drawn
+        dataSets.add(distributionData);
+        LineData lineData = new LineData(dataSets);
         chart.setData(lineData);
-        chart.invalidate(); // refresh
+        chart.invalidate();
     }
 
     public void addEstimated(){
-        double mean = SimulationManager.getSimulationSetup().getTheta();
+        /*double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        //int samples = getNumberPicketValue
-        int samples = 6; // to be removed
-        Random run = new Random();
-        double [] gaussianSamples = new double[samples];
-        for (int i=0;i<samples;i++) {
+        int maximumSamples = 10;
+        Random ran = new Random();
+        double [] gaussianSamples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
             gaussianSamples[i] = ((ran.nextGaussian()));
         }
 
-        double [] distrVals = new double[samples];
-        /*for (int i=0;   i<samples;    i++) {
-            if (i<samples/2)
+        double [] distrVals = new double[maximumSamples];
+        double [] samples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            if (i<maximumSamples/2)
                 samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
             else
                 samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
 
             // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
             distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
-        }*/
+        }
 
         List<Entry> entries = new ArrayList<Entry>();
-        for (int i=0;i<samples;i++) {//bad
-            entries.add(new Entry((float) (0+distrVals[i]),(float) distrVals[i]));
+        for (int i=0;i<maximumSamples;i++) {
+            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
         }
 
         Collections.sort(entries, new EntryXComparator());
-        LineDataSet distributionData = new LineDataSet(entries, "Estimated Values"); // add entries to dataset
+        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution");
         LineData lineData = new LineData(distributionData);
-        lineData.setColor("#ff0000");
-        lineData.setValueTextColor("#ff0000");
+        distributionData.setColor(99);
+        lineData.setValueTextColor(0);
         chart.setData(lineData);
-        chart.invalidate(); // refresh
+        chart.invalidate(); // refresh*/
 
     }
 

@@ -86,6 +86,7 @@ public class run_multiple extends Fragment {
     private NumberPicker np;
     private Simulation run_sim;
     private SimulationSetup setup;
+    public double [] thetaHatValues;
     public void onViewCreated(View view, Bundle savedInstanceState) {
         np = (NumberPicker)view.findViewById(R.id.np);
         np.setMinValue(0);
@@ -105,10 +106,11 @@ public class run_multiple extends Fragment {
                 SimulationManager.getSimulationSetup().setK(sim_setup.getKValue());
                 SimulationManager.getSimulationSetup().setRician(sim_setup.ricianChannels());
                 SimulationManager.getSimulationSetup().setUniform(sim_setup.uniformAlphas());
-
+                thetaHatValues = new double[val];//Set values
                 for(int i = 0; i<val; i++){
                     //run_sim.runSimulation();
                     SimulationManager.runSimulation();
+                    thetaHatValues[i] = SimulationManager.getLastSimulation().getThetaHat().getReal();
                 }
             }
         });
