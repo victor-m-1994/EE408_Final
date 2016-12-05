@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.graph) {
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
-            fragment = run_once_fragment;
+            fragment = graph_fragment;
             SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
             SimulationManager.getSimulationSetup().setSensorCount(simulation_setup_fragment.getNumberOfSensors());
             SimulationManager.getSimulationSetup().setTheta(simulation_setup_fragment.getThetaValue());
@@ -125,10 +125,28 @@ public class MainActivity extends AppCompatActivity
             SimulationManager.getSimulationSetup().setVarianceN(simulation_setup_fragment.getNVariance());
             SimulationManager.getSimulationSetup().setVarianceV(simulation_setup_fragment.getVVariance());
             SimulationManager.getSimulationSetup().setK(simulation_setup_fragment.getKValue());
-            SimulationManager.getSimulationSetup().setRician(simulation_setup_fragment.ricianChannels());
-            SimulationManager.getSimulationSetup().setUniform(simulation_setup_fragment.uniformAlphas());
+            if(simulation_setup_fragment.ricianChannels())
+            {
+                SimulationManager.getSimulationSetup().setUniform(false);
+                SimulationManager.getSimulationSetup().setOptimum(true);
+                SimulationManager.getSimulationSetup().setRician(true);
+                SimulationManager.getSimulationSetup().setAWGN(false);
+            }
+            else
+            {
+                if(simulation_setup_fragment.uniformAlphas())
+                {
+                    SimulationManager.getSimulationSetup().setUniform(true);
+                    SimulationManager.getSimulationSetup().setOptimum(false);
+                }
+                SimulationManager.getSimulationSetup().setRician(false);
+                SimulationManager.getSimulationSetup().setAWGN(true);
+            }
+
 
             SimulationManager.runSimulation();
+            run_multiple_fragment.thetaHatValues = new double[1];
+            run_multiple_fragment.thetaHatValues[0] = SimulationManager.getLastSimulation().getThetaHat().getReal();
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {

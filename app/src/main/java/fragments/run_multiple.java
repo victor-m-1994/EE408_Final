@@ -104,8 +104,25 @@ public class run_multiple extends Fragment {
                 SimulationManager.getSimulationSetup().setVarianceN(sim_setup.getNVariance());
                 SimulationManager.getSimulationSetup().setVarianceV(sim_setup.getVVariance());
                 SimulationManager.getSimulationSetup().setK(sim_setup.getKValue());
-                SimulationManager.getSimulationSetup().setRician(sim_setup.ricianChannels());
-                SimulationManager.getSimulationSetup().setUniform(sim_setup.uniformAlphas());
+                if(sim_setup.ricianChannels())
+                {
+                    SimulationManager.getSimulationSetup().setUniform(false);
+                    SimulationManager.getSimulationSetup().setOptimum(true);
+                    SimulationManager.getSimulationSetup().setRician(true);
+                    SimulationManager.getSimulationSetup().setAWGN(false);
+                }
+                else
+                {
+                    if(sim_setup.uniformAlphas())
+                    {
+                        SimulationManager.getSimulationSetup().setUniform(true);
+                        SimulationManager.getSimulationSetup().setOptimum(false);
+                    }
+                    SimulationManager.getSimulationSetup().setRician(false);
+                    SimulationManager.getSimulationSetup().setAWGN(true);
+                }
+
+
                 thetaHatValues = new double[val];//Set values
                 for(int i = 0; i<val; i++){
                     //run_sim.runSimulation();

@@ -121,6 +121,7 @@ public class graph extends Fragment {
         for (int i=0;   i<thetaHatValues.length;    i++) { //gets Distributed Theta Hat values
             distributedThetaHat[i] = (Math.pow(Math.exp(-(((thetaHatValues[i] - mean) * (thetaHatValues[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
         }
+        /*puts in the form of a list*/
         List<Entry> entries = new ArrayList<Entry>();
         for (int i=0;i<maximumSamples;i++) {
             entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
@@ -131,6 +132,8 @@ public class graph extends Fragment {
         for (int i=0;i<thetaHatValues.length;i++) {
             thetaHat.add(new Entry((float) (0+thetaHatValues[i]),(float) distributedThetaHat[i]));
         }
+        /*      END FORMING LIST        */
+
         Collections.sort(thetaHat, new EntryXComparator());
         LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
         thetaHatData.setLineWidth(0);
@@ -148,39 +151,6 @@ public class graph extends Fragment {
     }
 
     public void addEstimated(){
-        /*double mean = SimulationManager.getSimulationSetup().getTheta();
-        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        int maximumSamples = 10;
-        Random ran = new Random();
-        double [] gaussianSamples = new double[maximumSamples];
-        for (int i=0;i<maximumSamples;i++) {
-            gaussianSamples[i] = ((ran.nextGaussian()));
-        }
-
-        double [] distrVals = new double[maximumSamples];
-        double [] samples = new double[maximumSamples];
-        for (int i=0;i<maximumSamples;i++) {
-            if (i<maximumSamples/2)
-                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
-            else
-                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
-
-            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
-            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
-        }
-
-        List<Entry> entries = new ArrayList<Entry>();
-        for (int i=0;i<maximumSamples;i++) {
-            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
-        }
-
-        Collections.sort(entries, new EntryXComparator());
-        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution");
-        LineData lineData = new LineData(distributionData);
-        distributionData.setColor(99);
-        lineData.setValueTextColor(0);
-        chart.setData(lineData);
-        chart.invalidate(); // refresh*/
 
     }
 
