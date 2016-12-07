@@ -9,9 +9,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.victor.final_project_ee408.R;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.EntryXComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import API.SimulationManager;
+
+import static android.R.attr.fragment;
+import static com.example.victor.final_project_ee408.R.id.graph;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -62,20 +79,150 @@ public class graph extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        LineGraphSeries<DataPoint> series;
-        double y,x;
-        x = 0.0;
 
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
-        series = new LineGraphSeries<DataPoint>();
-        for(int i = 0; i<100; i++){
-            x = x + 0.1;
-            y = Math.sin(x);
-            series.appendData(new DataPoint(x, y), true, 100);
-        }
-        graph.addSeries(series);
+    private run_multiple shared_run_multiple;
+
+    public void passRunMultiple(run_multiple passed_run_multiple)
+    {
+        shared_run_multiple = passed_run_multiple;
     }
+
+    private LineChart chart;
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        createChart();
+        /*if(shared_run_multiple.thetaHatValues == null)
+        {
+            return;
+        }
+        double [] thetaHatValues = shared_run_multiple.thetaHatValues;
+        LineChart chart = (LineChart)view.findViewById(graph);
+
+        double mean = SimulationManager.getSimulationSetup().getTheta();
+        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
+        //int maximumSamples = 1000;
+        int maximumSamples = 1000;
+        Random ran = new Random();
+        double [] gaussianSamples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            gaussianSamples[i] = ((ran.nextGaussian()));
+        }
+
+        double [] distrVals = new double[maximumSamples];
+        double [] samples = new double[maximumSamples];
+        double [] distributedThetaHat = new double[thetaHatValues.length];
+        for (int i=0;   i<maximumSamples;    i++) {
+            if (i<maximumSamples/2)
+                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
+            else
+                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
+
+            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
+            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
+        }
+
+        Iterator it = shared_run_multiple.thetaHats.iterator();
+        Float thisThetaHat;
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>(); //for multiple plotting?
+        List<Entry> thetaHat = new ArrayList<Entry>();
+        while(it.hasNext()){
+            thisThetaHat = (Float)it.next();
+            thetaHat.add(new Entry((float) (thisThetaHat),(float) (Math.pow(Math.exp(-(((thisThetaHat - mean) * (thisThetaHat - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))))));
+        }
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<maximumSamples;i++) {
+            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
+        }
+
+
+        Collections.sort(thetaHat, new EntryXComparator());
+        LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
+        thetaHatData.setLineWidth(0);
+        thetaHatData.setFormLineWidth(0);
+        thetaHatData.setCircleColors(ColorTemplate.rgb("000000"));
+        dataSets.add(thetaHatData);
+
+        Collections.sort(entries, new EntryXComparator());
+        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
+        distributionData.setDrawCircles(false); //This makes sure the circles are not drawn
+        dataSets.add(distributionData);
+        LineData lineData = new LineData(dataSets);
+        chart.setData(lineData);
+        chart.invalidate();*/
+    }
+
+    public void createChart(){
+        /*if(shared_run_multiple.thetaHatValues == null)
+        {
+            return;
+        }
+        */
+        if(shared_run_multiple.thetaHats.isEmpty())
+        {
+            return;
+        }
+        //double [] thetaHatValues = shared_run_multiple.thetaHatValues;
+        LineChart chart = (LineChart)getView().findViewById(graph);
+
+        double mean = SimulationManager.getSimulationSetup().getTheta();
+        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
+        //int maximumSamples = 1000;
+        int maximumSamples = 1000;
+        Random ran = new Random();
+        double [] gaussianSamples = new double[maximumSamples];
+        for (int i=0;i<maximumSamples;i++) {
+            gaussianSamples[i] = ((ran.nextGaussian()));
+        }
+
+        double [] distrVals = new double[maximumSamples];
+        double [] samples = new double[maximumSamples];
+        //double [] distributedThetaHat = new double[thetaHatValues.length];
+        double [] distributedThetaHat = new double[shared_run_multiple.thetaHats.size()];
+        for (int i=0;   i<maximumSamples;    i++) {
+            if (i<maximumSamples/2)
+                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
+            else
+                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
+
+            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
+            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
+        }
+
+        Iterator it = shared_run_multiple.thetaHats.iterator();
+        Float thisThetaHat;
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>(); //for multiple plotting?
+        List<Entry> thetaHat = new ArrayList<Entry>();
+        while(it.hasNext()){
+            thisThetaHat = (Float)it.next();
+            thetaHat.add(new Entry((float) (thisThetaHat),(float) (Math.pow(Math.exp(-(((thisThetaHat - mean) * (thisThetaHat - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))))));
+        }
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i=0;i<maximumSamples;i++) {
+            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
+        }
+
+
+        Collections.sort(thetaHat, new EntryXComparator());
+        LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
+        thetaHatData.setLineWidth(0);
+        thetaHatData.setFormLineWidth(0);
+        thetaHatData.setCircleColors(ColorTemplate.rgb("000000"));
+        dataSets.add(thetaHatData);
+
+        Collections.sort(entries, new EntryXComparator());
+        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
+        distributionData.setDrawCircles(false); //This makes sure the circles are not drawn
+        dataSets.add(distributionData);
+        LineData lineData = new LineData(dataSets);
+        chart.setData(lineData);
+        chart.invalidate();
+    }
+    public void addEstimated(){
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

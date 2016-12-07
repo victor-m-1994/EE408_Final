@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.victor.final_project_ee408.R;
+
+import API.SimulationManager;
+import API.SimulationSetup;
 
 import static com.example.victor.final_project_ee408.R.layout.fragment_sensors;
 
@@ -75,7 +79,7 @@ public class simulation_setup extends Fragment {
 
     private EditText obv_name,num_sensors,theta,power,nVariance,vVariance,kValue;
     private CompoundButton rician,uniformAlpha;
-
+    private Button save;
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         obv_name = (EditText) view.findViewById(R.id.obv_name);
@@ -87,6 +91,39 @@ public class simulation_setup extends Fragment {
         kValue = (EditText) view.findViewById(R.id.k_value);
         rician = (CompoundButton)view.findViewById(R.id.rician_chan);
         uniformAlpha = (CompoundButton)view.findViewById(R.id.uniform_alpha);
+        save = (Button)view.findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                SimulationManager.getSimulationSetup().setObservation(getObservationName());
+                SimulationManager.getSimulationSetup().setSensorCount(getNumberOfSensors());
+                SimulationManager.getSimulationSetup().setTheta(getThetaValue());
+                SimulationManager.getSimulationSetup().setPower(getPowerValue());
+                SimulationManager.getSimulationSetup().setVarianceN(getNVariance());
+                SimulationManager.getSimulationSetup().setVarianceV(getVVariance());
+                SimulationManager.getSimulationSetup().setK(getKValue());
+                if(ricianChannels())
+                {
+                    SimulationManager.getSimulationSetup().setUniform(false);
+                    SimulationManager.getSimulationSetup().setOptimum(true);
+                    SimulationManager.getSimulationSetup().setRician(true);
+                    SimulationManager.getSimulationSetup().setAWGN(false);
+                }
+                else
+                {
+                    if(uniformAlphas())
+                    {
+                        SimulationManager.getSimulationSetup().setUniform(true);
+                        SimulationManager.getSimulationSetup().setOptimum(false);
+                    }
+                    else{
+                        SimulationManager.getSimulationSetup().setUniform(false);
+                        SimulationManager.getSimulationSetup().setOptimum(true);
+                    }
+                    SimulationManager.getSimulationSetup().setRician(false);
+                    SimulationManager.getSimulationSetup().setAWGN(true);
+                }
+            }
+        });
     }
 
 

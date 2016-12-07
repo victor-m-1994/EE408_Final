@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.victor.final_project_ee408.R;
 
 //import API.Simulation;
+import java.util.Vector;
+
 import API.*;
 /**
  * A simple {@link Fragment} subclass.
@@ -86,33 +88,29 @@ public class run_multiple extends Fragment {
     private NumberPicker np;
     private Simulation run_sim;
     private SimulationSetup setup;
+    public double [] thetaHatValues;
+    public Vector<Float> thetaHats = new Vector<Float>(10);
     public void onViewCreated(View view, Bundle savedInstanceState) {
         np = (NumberPicker)view.findViewById(R.id.np);
         np.setMinValue(0);
         np.setMaxValue(100);
-
         final Button runBtn = (Button) view.findViewById(R.id.runBtn);
         runBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 int val = np.getValue();
-                //run_sim = new Simulation(setup);
-                SimulationManager.getSimulationSetup().setObservation(sim_setup.getObservationName());
-                SimulationManager.getSimulationSetup().setSensorCount(sim_setup.getNumberOfSensors());
-                SimulationManager.getSimulationSetup().setTheta(sim_setup.getThetaValue());
-                SimulationManager.getSimulationSetup().setPower(sim_setup.getPowerValue());
-                SimulationManager.getSimulationSetup().setVarianceN(sim_setup.getNVariance());
-                SimulationManager.getSimulationSetup().setVarianceV(sim_setup.getVVariance());
-                SimulationManager.getSimulationSetup().setK(sim_setup.getKValue());
-                SimulationManager.getSimulationSetup().setRician(sim_setup.ricianChannels());
-                SimulationManager.getSimulationSetup().setUniform(sim_setup.uniformAlphas());
-
+                thetaHatValues = new double[val];//Set values
                 for(int i = 0; i<val; i++){
                     //run_sim.runSimulation();
                     SimulationManager.runSimulation();
+                    thetaHatValues[i] = SimulationManager.getLastSimulation().getThetaHat().getReal();
+                    thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
                 }
             }
         });
 
+    }
+    public int getNumberPicker(){
+        return np.getValue();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -155,6 +153,7 @@ public class run_multiple extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 
 
 }

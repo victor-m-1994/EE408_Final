@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.NumberPicker;
 
+import API.SetupListener;
 import API.SimulationManager;
 import fragments.general_info;
 import fragments.graph;
@@ -26,6 +28,8 @@ import fragments.sensors;
 import fragments.simulation_setup;
 import static android.R.attr.fragment;
 import android.widget.TextView;
+
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,15 +62,16 @@ public class MainActivity extends AppCompatActivity
 
         //Loads each fragment, in turn, initializing the data
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_once_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, sensors_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
         general_info_fragment.passSimValues(simulation_setup_fragment);
         run_multiple_fragment.passSimValues(simulation_setup_fragment);
+        graph_fragment.passRunMultiple(run_multiple_fragment);
+        fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
-
+        SimulationManager.setSetupListener(setupListener);
     }
 
     @Override
@@ -93,14 +98,10 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -112,34 +113,47 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.general_info) {
             fragment = general_info_fragment;
         } else if (id == R.id.sensors) {
+            //TODO: fix sensors page so that it reloads appropriate amount of sensors and doesnt crash
             fragment = sensors_fragment;
         } else if (id == R.id.graph) {
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
-            fragment = run_once_fragment;
-            SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
-            SimulationManager.getSimulationSetup().setSensorCount(simulation_setup_fragment.getNumberOfSensors());
-            SimulationManager.getSimulationSetup().setTheta(simulation_setup_fragment.getThetaValue());
-            SimulationManager.getSimulationSetup().setPower(simulation_setup_fragment.getPowerValue());
-            SimulationManager.getSimulationSetup().setVarianceN(simulation_setup_fragment.getNVariance());
-            SimulationManager.getSimulationSetup().setVarianceV(simulation_setup_fragment.getVVariance());
-            SimulationManager.getSimulationSetup().setK(simulation_setup_fragment.getKValue());
-            SimulationManager.getSimulationSetup().setRician(simulation_setup_fragment.ricianChannels());
-            SimulationManager.getSimulationSetup().setUniform(simulation_setup_fragment.uniformAlphas());
-
+            fragment = graph_fragment;
             SimulationManager.runSimulation();
+            //TODO: Make thetaHats vector accessible to all
+            run_multiple_fragment.thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {
+            //TODO: Add
             fragment = simulation_setup_fragment;
         }
-
-        if(fragment !=run_once_fragment) {
+        if(fragment == graph_fragment){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            //fragmentManager.beginTransaction();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).detach(fragment).attach(fragment).commit();
+    }
+        else{
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+            //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            //drawer.closeDrawer(GravityCompat.START);
         }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);*/
+
         return true;
     }
+
+    SetupListener setupListener = new SetupListener() {
+        @Override
+        public void setupChanged() {
+            run_multiple_fragment.thetaHatValues=new double[100];
+            run_multiple_fragment.thetaHats.clear();
+        }
+    };
 }
