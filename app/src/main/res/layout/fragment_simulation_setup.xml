@@ -178,6 +178,14 @@
                 android:id="@+id/uniform_alpha"
                 />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_below="@id/uniform_alpha"
+                android:id="@+id/save"
+                />
+
         </RelativeLayout>
     </ScrollView>
 

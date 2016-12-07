@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.NumberPicker;
 
+import API.SetupListener;
 import API.SimulationManager;
 import fragments.general_info;
 import fragments.graph;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        SimulationManager.setSetupListener(setupListener);
         int id = item.getItemId();
         Fragment fragment = null;
         if (id == R.id.general_info) {
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
             fragment = graph_fragment;
-            SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
+           /* SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
             SimulationManager.getSimulationSetup().setSensorCount(simulation_setup_fragment.getNumberOfSensors());
             SimulationManager.getSimulationSetup().setTheta(simulation_setup_fragment.getThetaValue());
             SimulationManager.getSimulationSetup().setPower(simulation_setup_fragment.getPowerValue());
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity
                 SimulationManager.getSimulationSetup().setRician(false);
                 SimulationManager.getSimulationSetup().setAWGN(true);
             }
-
+*/
 
             SimulationManager.runSimulation();
             run_multiple_fragment.thetaHatValues = new double[1];
@@ -161,4 +163,11 @@ public class MainActivity extends AppCompatActivity
         }
         return true;
     }
+
+    SetupListener setupListener = new SetupListener() {
+        @Override
+        public void setupChanged() {
+            run_multiple_fragment.thetaHatValues=new double[100];
+        }
+    };
 }

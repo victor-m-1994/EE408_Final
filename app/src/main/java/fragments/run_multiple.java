@@ -97,7 +97,7 @@ public class run_multiple extends Fragment {
             public void onClick(View v){
                 int val = np.getValue();
                 //run_sim = new Simulation(setup);
-                SimulationManager.getSimulationSetup().setObservation(sim_setup.getObservationName());
+               /* SimulationManager.getSimulationSetup().setObservation(sim_setup.getObservationName());
                 SimulationManager.getSimulationSetup().setSensorCount(sim_setup.getNumberOfSensors());
                 SimulationManager.getSimulationSetup().setTheta(sim_setup.getThetaValue());
                 SimulationManager.getSimulationSetup().setPower(sim_setup.getPowerValue());
@@ -120,8 +120,7 @@ public class run_multiple extends Fragment {
                     }
                     SimulationManager.getSimulationSetup().setRician(false);
                     SimulationManager.getSimulationSetup().setAWGN(true);
-                }
-
+                }*/
 
                 thetaHatValues = new double[val];//Set values
                 for(int i = 0; i<val; i++){
@@ -177,6 +176,7 @@ public class run_multiple extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 
 
 }
