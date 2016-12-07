@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.victor.final_project_ee408.R;
 
 import API.SimulationManager;
+import API.SimulationSetup;
 
 import static com.example.victor.final_project_ee408.R.layout.fragment_sensors;
 
@@ -113,6 +114,10 @@ public class simulation_setup extends Fragment {
                     {
                         SimulationManager.getSimulationSetup().setUniform(true);
                         SimulationManager.getSimulationSetup().setOptimum(false);
+                    }
+                    else{
+                        SimulationManager.getSimulationSetup().setUniform(false);
+                        SimulationManager.getSimulationSetup().setOptimum(true);
                     }
                     SimulationManager.getSimulationSetup().setRician(false);
                     SimulationManager.getSimulationSetup().setAWGN(true);

@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,6 +28,8 @@ import fragments.sensors;
 import fragments.simulation_setup;
 import static android.R.attr.fragment;
 import android.widget.TextView;
+
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         graph_fragment.passRunMultiple(run_multiple_fragment);
         fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
-
+        SimulationManager.setSetupListener(setupListener);
     }
 
     @Override
@@ -104,12 +107,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        SimulationManager.setSetupListener(setupListener);
         int id = item.getItemId();
         Fragment fragment = null;
         if (id == R.id.general_info) {
@@ -120,47 +121,36 @@ public class MainActivity extends AppCompatActivity
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
             fragment = graph_fragment;
-           /* SimulationManager.getSimulationSetup().setObservation(simulation_setup_fragment.getObservationName());
-            SimulationManager.getSimulationSetup().setSensorCount(simulation_setup_fragment.getNumberOfSensors());
-            SimulationManager.getSimulationSetup().setTheta(simulation_setup_fragment.getThetaValue());
-            SimulationManager.getSimulationSetup().setPower(simulation_setup_fragment.getPowerValue());
-            SimulationManager.getSimulationSetup().setVarianceN(simulation_setup_fragment.getNVariance());
-            SimulationManager.getSimulationSetup().setVarianceV(simulation_setup_fragment.getVVariance());
-            SimulationManager.getSimulationSetup().setK(simulation_setup_fragment.getKValue());
-            if(simulation_setup_fragment.ricianChannels())
-            {
-                SimulationManager.getSimulationSetup().setUniform(false);
-                SimulationManager.getSimulationSetup().setOptimum(true);
-                SimulationManager.getSimulationSetup().setRician(true);
-                SimulationManager.getSimulationSetup().setAWGN(false);
-            }
-            else
-            {
-                if(simulation_setup_fragment.uniformAlphas())
-                {
-                    SimulationManager.getSimulationSetup().setUniform(true);
-                    SimulationManager.getSimulationSetup().setOptimum(false);
-                }
-                SimulationManager.getSimulationSetup().setRician(false);
-                SimulationManager.getSimulationSetup().setAWGN(true);
-            }
-*/
-
+            graph_fragment.createChart();
             SimulationManager.runSimulation();
-            run_multiple_fragment.thetaHatValues = new double[1];
-            run_multiple_fragment.thetaHatValues[0] = SimulationManager.getLastSimulation().getThetaHat().getReal();
+            //run_multiple_fragment.thetaHatValues = new double[1];
+            //run_multiple_fragment.thetaHatValues[0] = SimulationManager.getLastSimulation().getThetaHat().getReal();
+            //TODO: Make thetaHats vector accessible to all
+            //TODO: Make the graph view reload properly after run_once is hit
+            run_multiple_fragment.thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {
             fragment = simulation_setup_fragment;
         }
-
-        if(fragment !=run_once_fragment) {
+        if(fragment == graph_fragment){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            //fragmentManager.beginTransaction();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).detach(fragment).attach(fragment).commit();
+    }
+        else{
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+            //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            //drawer.closeDrawer(GravityCompat.START);
         }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);*/
+
         return true;
     }
 
@@ -168,6 +158,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void setupChanged() {
             run_multiple_fragment.thetaHatValues=new double[100];
+            run_multiple_fragment.thetaHats.clear();
         }
     };
 }
