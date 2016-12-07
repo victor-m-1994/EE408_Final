@@ -98,10 +98,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -116,21 +113,19 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.general_info) {
             fragment = general_info_fragment;
         } else if (id == R.id.sensors) {
+            //TODO: fix sensors page so that it reloads appropriate amount of sensors and doesnt crash
             fragment = sensors_fragment;
         } else if (id == R.id.graph) {
             fragment = graph_fragment;
         } else if (id == R.id.run_once) {
             fragment = graph_fragment;
-            graph_fragment.createChart();
             SimulationManager.runSimulation();
-            //run_multiple_fragment.thetaHatValues = new double[1];
-            //run_multiple_fragment.thetaHatValues[0] = SimulationManager.getLastSimulation().getThetaHat().getReal();
             //TODO: Make thetaHats vector accessible to all
-            //TODO: Make the graph view reload properly after run_once is hit
             run_multiple_fragment.thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
         } else if (id == R.id.simulation_setup) {
+            //TODO: Add
             fragment = simulation_setup_fragment;
         }
         if(fragment == graph_fragment){
