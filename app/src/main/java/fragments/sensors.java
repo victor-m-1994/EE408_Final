@@ -140,23 +140,50 @@ public class sensors extends Fragment {
             holder2 = "          ";
             holder2 += s.getID() + "            ";//was "\t\t"
             h1 = "";
-            for ( int f = 0; f < 4; f++ ){
-                h1 += Double.toString(s.getAlpha().getMagnitude()).charAt(f);
+            if(Double.toString(s.getAlpha().getMagnitude()).length() <= 4)
+            {
+                h1 += "    ";
+            }
+            else {
+                for ( int f = 0; f < 4; f++ ){
+                    h1 += Double.toString(s.getAlpha().getMagnitude()).charAt(f);
+                }
             }
             holder2 += h1 + "           "; //was "\t\t"
             h1 = "";
-            for ( int f = 0; f < 4; f++ ){
-                h1 += Double.toString(s.getHVal().getMagnitude()).charAt(f);
+            if(Double.toString(s.getHVal().getMagnitude()).length() == 0)
+            {
+                h1 += "    ";
+            }
+            else {
+                for (int f = 0; f < 4; f++) {
+                    if (f < Double.toString(s.getHVal().getMagnitude()).length())
+                    {
+                        h1 += Double.toString(s.getHVal().getMagnitude()).charAt(f);
+                    }
+                }
             }
             holder2 += h1 + "           ";//was "\t\t"
             h1 = "";
-            for ( int f = 0; f < 4; f++ ){
-                h1 += Double.toString(s.getNVal().getReal()).charAt(f);
+            if(Double.toString(s.getNVal().getReal()).length() <= 4)
+            {
+                h1 += "    ";
+            }
+            else {
+                for ( int f = 0; f < 4; f++ ){
+                    h1 += Double.toString(s.getNVal().getReal()).charAt(f);
+                }
             }
             holder2 += h1 + " + ";
             h1 = "";
-            for ( int f = 0; f < 4; f++ ){
-                h1 += Double.toString(s.getNVal().getImaginary()).charAt(f);
+            if(Double.toString(s.getNVal().getImaginary()).length() <= 4)
+            {
+                h1 += "    ";
+            }
+            else {
+                for ( int f = 0; f < 4; f++ ){
+                    h1 += Double.toString(s.getNVal().getImaginary()).charAt(f);
+                }
             }
             holder2 += h1 + "j";
             holder[i] = holder2;

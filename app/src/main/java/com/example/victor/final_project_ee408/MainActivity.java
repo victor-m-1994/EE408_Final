@@ -23,7 +23,6 @@ import API.SimulationManager;
 import fragments.general_info;
 import fragments.graph;
 import fragments.run_multiple;
-import fragments.run_once;
 import fragments.sensors;
 import fragments.simulation_setup;
 import static android.R.attr.fragment;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity
     private general_info general_info_fragment = new general_info();
     private graph graph_fragment = new graph();
     private run_multiple run_multiple_fragment = new run_multiple();
-    private run_once run_once_fragment = new run_once();
     private sensors sensors_fragment = new sensors();
     private simulation_setup simulation_setup_fragment = new simulation_setup();
 
@@ -63,14 +61,13 @@ public class MainActivity extends AppCompatActivity
         //Loads each fragment, in turn, initializing the data
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
-        fragmentManager.beginTransaction().replace(R.id.flContent, run_once_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, sensors_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, simulation_setup_fragment).commit();
         general_info_fragment.passSimValues(simulation_setup_fragment);
-        run_multiple_fragment.passSimValues(simulation_setup_fragment);
         graph_fragment.passRunMultiple(run_multiple_fragment);
         fragmentManager.beginTransaction().replace(R.id.flContent, graph_fragment).commit();
         fragmentManager.beginTransaction().replace(R.id.flContent, general_info_fragment).commit();
+        run_multiple_fragment.passGraph(graph_fragment);
         SimulationManager.setSetupListener(setupListener);
     }
 
@@ -130,22 +127,14 @@ public class MainActivity extends AppCompatActivity
         }
         if(fragment == graph_fragment){
             FragmentManager fragmentManager = getSupportFragmentManager();
-            //fragmentManager.beginTransaction();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment).detach(fragment).attach(fragment).commit();
     }
         else{
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-            //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            //drawer.closeDrawer(GravityCompat.START);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
-
         return true;
     }
 

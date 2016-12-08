@@ -91,83 +91,17 @@ public class graph extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         createChart();
-        /*if(shared_run_multiple.thetaHatValues == null)
-        {
-            return;
-        }
-        double [] thetaHatValues = shared_run_multiple.thetaHatValues;
-        LineChart chart = (LineChart)view.findViewById(graph);
-
-        double mean = SimulationManager.getSimulationSetup().getTheta();
-        double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        //int maximumSamples = 1000;
-        int maximumSamples = 1000;
-        Random ran = new Random();
-        double [] gaussianSamples = new double[maximumSamples];
-        for (int i=0;i<maximumSamples;i++) {
-            gaussianSamples[i] = ((ran.nextGaussian()));
-        }
-
-        double [] distrVals = new double[maximumSamples];
-        double [] samples = new double[maximumSamples];
-        double [] distributedThetaHat = new double[thetaHatValues.length];
-        for (int i=0;   i<maximumSamples;    i++) {
-            if (i<maximumSamples/2)
-                samples[i] = (mean-(Math.sqrt(variance)*gaussianSamples[i]));
-            else
-                samples[i] = (mean+(Math.sqrt(variance)*gaussianSamples[i]));
-
-            // This is the renormalized Gaussian formula, specific for this application, reuse for plotting  thetahat
-            distrVals[i] = (Math.pow(Math.exp(-(((samples[i] - mean) * (samples[i] - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))));
-        }
-
-        Iterator it = shared_run_multiple.thetaHats.iterator();
-        Float thisThetaHat;
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>(); //for multiple plotting?
-        List<Entry> thetaHat = new ArrayList<Entry>();
-        while(it.hasNext()){
-            thisThetaHat = (Float)it.next();
-            thetaHat.add(new Entry((float) (thisThetaHat),(float) (Math.pow(Math.exp(-(((thisThetaHat - mean) * (thisThetaHat - mean)) / ((2 * variance)))), 1 / (Math.sqrt(variance) * Math.sqrt(2 * Math.PI))))));
-        }
-
-        List<Entry> entries = new ArrayList<Entry>();
-        for (int i=0;i<maximumSamples;i++) {
-            entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
-        }
-
-
-        Collections.sort(thetaHat, new EntryXComparator());
-        LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
-        thetaHatData.setLineWidth(0);
-        thetaHatData.setFormLineWidth(0);
-        thetaHatData.setCircleColors(ColorTemplate.rgb("000000"));
-        dataSets.add(thetaHatData);
-
-        Collections.sort(entries, new EntryXComparator());
-        LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
-        distributionData.setDrawCircles(false); //This makes sure the circles are not drawn
-        dataSets.add(distributionData);
-        LineData lineData = new LineData(dataSets);
-        chart.setData(lineData);
-        chart.invalidate();*/
     }
 
     public void createChart(){
-        /*if(shared_run_multiple.thetaHatValues == null)
-        {
-            return;
-        }
-        */
         if(shared_run_multiple.thetaHats.isEmpty())
         {
             return;
         }
-        //double [] thetaHatValues = shared_run_multiple.thetaHatValues;
         LineChart chart = (LineChart)getView().findViewById(graph);
 
         double mean = SimulationManager.getSimulationSetup().getTheta();
         double variance = (SimulationManager.getSimulationSetup().getC()/SimulationManager.getSimulationSetup().getSensorCount());
-        //int maximumSamples = 1000;
         int maximumSamples = 1000;
         Random ran = new Random();
         double [] gaussianSamples = new double[maximumSamples];
@@ -177,7 +111,6 @@ public class graph extends Fragment {
 
         double [] distrVals = new double[maximumSamples];
         double [] samples = new double[maximumSamples];
-        //double [] distributedThetaHat = new double[thetaHatValues.length];
         double [] distributedThetaHat = new double[shared_run_multiple.thetaHats.size()];
         for (int i=0;   i<maximumSamples;    i++) {
             if (i<maximumSamples/2)

@@ -8,26 +8,32 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:text="Select a number..."
-            />
-        <NumberPicker
-            android:id="@+id/np"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv"
-            />
+            android:textSize="15dp"
+            android:text="Number of simulations: "
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp" />
 
         <Button
             android:text="Run"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/runBtn"
+            android:layout_marginBottom="111dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <NumberPicker
+            android:id="@+id/np"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/runBtn"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp" />
+            android:layout_marginBottom="39dp" />
     </RelativeLayout>
 </FrameLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,12 +73,7 @@ public class run_multiple extends Fragment {
         System.out.println("onCreate for run_multiple");
     }
 
-    private simulation_setup sim_setup;
 
-    public void passSimValues(simulation_setup simVals)
-    {
-        sim_setup = simVals;
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,9 +82,12 @@ public class run_multiple extends Fragment {
         System.out.println("onCreateView for run_multiple");
         return inflater.inflate(R.layout.fragment_run_multiple, container, false);
     }
+    public void passGraph(graph graph)
+    {
+        shared_graph = graph;
+    }
+    private graph shared_graph;
     private NumberPicker np;
-    private Simulation run_sim;
-    private SimulationSetup setup;
     public double [] thetaHatValues;
     public Vector<Float> thetaHats = new Vector<Float>(10);
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -105,6 +105,9 @@ public class run_multiple extends Fragment {
                     thetaHatValues[i] = SimulationManager.getLastSimulation().getThetaHat().getReal();
                     thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
                 }
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.flContent, shared_graph);
+                ft.commit();
             }
         });
 
