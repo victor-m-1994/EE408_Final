@@ -19,7 +19,8 @@
             ></item>
     </group>
 
-    <item android:title="Simulation">
+    <item android:title="Simulation"
+        android:id="@+id/simulationText">
         <menu>
             <item
                 android:title="Run Once"

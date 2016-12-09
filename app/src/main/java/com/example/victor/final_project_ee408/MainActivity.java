@@ -6,6 +6,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -58,9 +60,16 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //new
+        Menu menu = navigationView.getMenu();
+
+        MenuItem tools= menu.findItem(R.id.simulationText);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+
         navigationView.setNavigationItemSelectedListener(this);
 
-        //sets fragmenmtTitle to be changed
         //Loads each fragment, in turn, initializing the data
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
