@@ -77,12 +77,7 @@ public class general_info extends Fragment {
     }
 
     private ListView list;
-    private simulation_setup sim_setup;
 
-    public void passSimValues(simulation_setup simVals)
-    {
-        sim_setup = simVals;
-    }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         list = (ListView)view.findViewById(R.id.list);//Creates list
@@ -98,16 +93,16 @@ public class general_info extends Fragment {
                 "Using Uniform Alphas: "
         };
 
-        values[0] += sim_setup.getObservationName();
+        values[0] += SimulationManager.getSimulationSetup().getObservation();
         values[1] += SimulationManager.getLastSimulation().getThetaHat().toFormattedString();
         values[2] += SimulationManager.getSimulationSetup().getTheta();
         values[3] += SimulationManager.getSimulationSetup().getSensorCount();
-        values[4] += sim_setup.getPowerValue();
-        values[5] += sim_setup.getNVariance();
-        values[6] += sim_setup.getVVariance();
-        values[7] += sim_setup.getKValue();
-        values[8] += sim_setup.ricianChannels();
-        values[9] += sim_setup.uniformAlphas();
+        values[4] += SimulationManager.getSimulationSetup().getPower();
+        values[5] += SimulationManager.getSimulationSetup().getVarianceN();
+        values[6] += SimulationManager.getSimulationSetup().getVarianceV();
+        values[7] += SimulationManager.getSimulationSetup().getK();
+        values[8] += SimulationManager.getSimulationSetup().isRician();
+        values[9] += SimulationManager.getSimulationSetup().isUniform();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);

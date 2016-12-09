@@ -110,6 +110,7 @@ public class simulation_setup extends Fragment {
                 }
                 else
                 {
+                    SimulationManager.getSimulationSetup().setRician(false);
                     if(uniformAlphas())
                     {
                         SimulationManager.getSimulationSetup().setUniform(true);

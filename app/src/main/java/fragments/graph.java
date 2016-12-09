@@ -136,17 +136,18 @@ public class graph extends Fragment {
             entries.add(new Entry((float) (0+samples[i]),(float) distrVals[i]));
         }
 
-
         Collections.sort(thetaHat, new EntryXComparator());
         LineDataSet thetaHatData = new LineDataSet(thetaHat,"thetaHat");
         thetaHatData.setLineWidth(0);
         thetaHatData.setFormLineWidth(0);
         thetaHatData.setCircleColors(ColorTemplate.rgb("000000"));
+        thetaHatData.setDrawCircleHole(false);
         dataSets.add(thetaHatData);
 
         Collections.sort(entries, new EntryXComparator());
         LineDataSet distributionData = new LineDataSet(entries, "Default Distribution"); // add entries to dataset
         distributionData.setDrawCircles(false); //This makes sure the circles are not drawn
+        distributionData.setLineWidth(2);
         dataSets.add(distributionData);
         LineData lineData = new LineData(dataSets);
         chart.setData(lineData);
