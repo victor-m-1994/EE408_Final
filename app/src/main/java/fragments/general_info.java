@@ -89,8 +89,8 @@ public class general_info extends Fragment {
                 "N Variance: ",
                 "V Variance: ",
                 "K Value: ",
-                "Using Rician Channels: ",
-                "Using Uniform Alphas: "
+                "Channels: ",
+                "Alphas: "
         };
 
         values[0] += SimulationManager.getSimulationSetup().getObservation();
@@ -101,8 +101,20 @@ public class general_info extends Fragment {
         values[5] += SimulationManager.getSimulationSetup().getVarianceN();
         values[6] += SimulationManager.getSimulationSetup().getVarianceV();
         values[7] += SimulationManager.getSimulationSetup().getK();
-        values[8] += SimulationManager.getSimulationSetup().isRician();
-        values[9] += SimulationManager.getSimulationSetup().isUniform();
+        //values[8] += SimulationManager.getSimulationSetup().isRician();
+        if(SimulationManager.getSimulationSetup().isRician()){
+            values[8] += "Rician";
+        }
+        else{
+            values[8] += "AWGN";
+        }
+        if(SimulationManager.getSimulationSetup().isUniform()){
+            values[9] += "Uniform";
+        }
+        else{
+            values[9] += "Optimum";
+        }
+        //values[9] += SimulationManager.getSimulationSetup().isUniform();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);

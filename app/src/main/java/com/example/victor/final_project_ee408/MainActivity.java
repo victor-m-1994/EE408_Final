@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 
 import API.SetupListener;
@@ -26,6 +27,8 @@ import fragments.run_multiple;
 import fragments.sensors;
 import fragments.simulation_setup;
 import static android.R.attr.fragment;
+import static com.example.victor.final_project_ee408.R.id.textView;
+
 import android.widget.TextView;
 
 import java.util.Vector;
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     private run_multiple run_multiple_fragment = new run_multiple();
     private sensors sensors_fragment = new sensors();
     private simulation_setup simulation_setup_fragment = new simulation_setup();
-
+    private TextView fragmentTitle;
     private NumberPicker np;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //sets fragmenmtTitle to be changed
         //Loads each fragment, in turn, initializing the data
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, run_multiple_fragment).commit();
@@ -105,24 +108,27 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
         Fragment fragment = null;
         if (id == R.id.general_info) {
             fragment = general_info_fragment;
+            this.setTitle("General Info");
         } else if (id == R.id.sensors) {
-            //TODO: fix sensors page so that it reloads appropriate amount of sensors and doesnt crash
             fragment = sensors_fragment;
+            this.setTitle("Sensors");
         } else if (id == R.id.graph) {
             fragment = graph_fragment;
+            this.setTitle("Graph");
         } else if (id == R.id.run_once) {
             fragment = graph_fragment;
             SimulationManager.runSimulation();
-            //TODO: Make thetaHats vector accessible to all
             run_multiple_fragment.thetaHats.add((float)SimulationManager.getLastSimulation().getThetaHat().getReal());
         } else if (id == R.id.run_multiple) {
             fragment = run_multiple_fragment;
+            this.setTitle("Run Multiple");
         } else if (id == R.id.simulation_setup) {
-            //TODO: Add
             fragment = simulation_setup_fragment;
+            this.setTitle("Simulation Setup");
         }
         if(fragment == graph_fragment){
             FragmentManager fragmentManager = getSupportFragmentManager();

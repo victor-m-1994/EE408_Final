@@ -125,6 +125,18 @@ public class simulation_setup extends Fragment {
                 }
             }
         });
+        rician.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(ricianChannels()){
+                    uniformAlpha.setEnabled(false);
+                }
+                else{
+                    uniformAlpha.setEnabled(true);
+                }
+            }
+        });
+
     }
 
 

@@ -110,22 +110,19 @@ public class sensors extends Fragment {
         public void onClick(View v) {
             Button b = (Button) v;
             if (b.getId() == sensor_sort.getId()) {
-//                SimulationManager.sortSensorsByAlpha(false);
-//                SimulationManager.sortSensorsByH(false);
-//                SimulationManager.sortSensorsByN(false);
-                SimulationManager.sortSensorsByNumber(true);
+                SimulationManager.sortSensorsByNumber(false);
                 setDisplay();
             }
             else if (b.getId() == alpha_sort.getId()) {
-                SimulationManager.sortSensorsByAlpha(true);
+                SimulationManager.sortSensorsByAlpha(false);
                 setDisplay();
             }
             else if (b.getId() == h_val_sort.getId()) {
-                SimulationManager.sortSensorsByH(true);
+                SimulationManager.sortSensorsByH(false);
                 setDisplay();
             }
             else if (b.getId() == n_val_sort.getId()) {
-                SimulationManager.sortSensorsByN(true);
+                SimulationManager.sortSensorsByN(false);
                 setDisplay();
             }
         }
